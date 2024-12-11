@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="." />
+    <title>Enhanced Online Registration Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background-decor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: pulse 5s infinite alternate;
+        }
+
+        .background-decor.one {
+            top: 10%;
+            left: 5%;
+        }
+
+        .background-decor.two {
+            bottom: 10%;
+            right: 10%;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #34495e;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #9b59b6;
+            box-shadow: 0 4px 10px rgba(155, 89, 182, 0.4);
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #3498db, #9b59b6);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #formResult {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #ecf0f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-message {
+            color: #2ecc71;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .submitted-data p {
+            margin: 10px 0;
+            color: #2c3e50;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <div class="background-decor one"></div>
+    <div class="background-decor two"></div>
+
+    <div class="container">
+        <h1>Online Registration Form</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Course:</label>
+                <select id="course" name="course" required>
+                    <option value="">Select a course</option>
+                    <option value="web-development">Web Development</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="mobile-dev">Mobile Development</option>
+                    <option value="cloud-computing">Cloud Computing</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Comments:</label>
+                <textarea id="message" name="message" rows="4"></textarea>
+            </div>
+
+            <button type="submit">Submit Registration</button>
+        </form>
+
+        <div id="formResult">
+            <div class="success-message">
+                <h2>Registration Successful!</h2>
+                <p>Thank you for registering. Here are your submitted details:</p>
+            </div>
+            <div class="submitted-data">
+                <!-- Data will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#registrationForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = {
+                    fullName: $('#fullName').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    course: $('#course').val(),
+                    message: $('#message').val()
+                };
+
+                let submittedHtml = `
+                    <p><strong>Name:</strong> ${formData.fullName}</p>
+                    <p><strong>Email:</strong> ${formData.email}</p>
+                    <p><strong>Phone:</strong> ${formData.phone}</p>
+                    <p><strong>Course:</strong> ${formData.course}</p>
+                    <p><strong>Comments:</strong> ${formData.message || 'None'}</p>
+                `;
+
+                $('.submitted-data').html(submittedHtml);
+                $('#formResult').show();
+                $('#registrationForm')[0].reset();
+            });
+        });
+    </script>
+</body>
+</html>
